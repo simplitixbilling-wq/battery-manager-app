@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/bg_color">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_main"
+        android:textSize="24sp"
+        android:textColor="@color/fg_color"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Current Battery Status -->
+    <com.google.android.material.card.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@color/card_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textViewBatteryLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_battery_level"
+                android:textSize="18sp"
+                android:textColor="@color/fg_color"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/textViewChargingStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/is_charging"
+                android:textSize="16sp"
+                android:textColor="@color/teal_200" />
+
+        </LinearLayout>
+    </com.google.android.material.card.CardView>
+
+    <!-- Start Threshold Setting -->
+    <com.google.android.material.card.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@color/card_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_charging_threshold"
+                android:textSize="14sp"
+                android:textColor="@color/teal_200"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.slider.MultiSlider
+                android:id="@+id/sliderStartThreshold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumbRadius="24dp"
+                app:sliderMin="10"
+                app:sliderMax="80"
+                app:sliderMode="horizontal"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/textStartThresholdValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/@label_start_threshold"
+                android:textSize="16sp"
+                android:textColor="@color/fg_color" />
+
+        </LinearLayout>
+    </com.google.android.material.card.CardView>
+
+    <!-- Stop Threshold Setting -->
+    <com.google.android.material.card.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@color/card_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stop_charging_threshold"
+                android:textSize="14sp"
+                android:textColor="@color/orange_500"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.slider.MultiSlider
+                android:id="@+id/sliderStopThreshold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumbRadius="24dp"
+                app:sliderMin="20"
+                app:sliderMax="95"
+                app:sliderMode="horizontal"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/textStopThresholdValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/@label_stop_threshold"
+                android:textSize="16sp"
+                android:textColor="@color/fg_color" />
+
+        </LinearLayout>
+    </com.google.android.material.card.CardView>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSave"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/save_settings"
+            android:icon="@drawable/ic_save_24"
+            app:iconTint="@color/green_500" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonReset"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/reset_defaults"
+            android:icon="@drawable/ic_restore_24"
+            app:iconTint="@color/orange_500" />
+
+    </LinearLayout>
+
+    <!-- Permission Request -->
+    <com.google.android.material.card.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardBackgroundColor="@color/card_bg"
+        android:visibility="gone"
+        android:id="@+id/cardPermission">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/permission_needed"
+                android:textSize="16sp"
+                android:textColor="@color/warning_500"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/permission_explained"
+                android:textSize="14sp"
+                android:textColor="@color/fg_color"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonOpenSettings"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/open_settings"
+                android:icon="@drawable/ic_settings_24"
+                app:iconTint="@color/color_on_primary" />
+
+        </LinearLayout>
+    </com.google.android.material.card.CardView>
+
+    <!-- Status Indicator -->
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ready"
+        android:textSize="14sp"
+        android:textColor="@color/teal_200"
+        android:gravity="center"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

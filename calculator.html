@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Small Calculator</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --key: #232832;
+    --key-hover: #2b3240;
+    --key-eq: #4a8cff;
+    --key-eq-hover: #5d9aff;
+    --key-op: #3a4354;
+    --text: #e6e8ee;
+    --muted: #9aa3b2;
+    --display: #0b0e13;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(1200px 800px at 70% -10%, #1c2230 0%, var(--bg) 60%);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: var(--text);
+  }
+  .calc {
+    width: min(92vw, 320px);
+    background: var(--panel);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .display {
+    background: var(--display);
+    border-radius: 12px;
+    padding: 16px 14px;
+    margin-bottom: 12px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .prev {
+    min-height: 1.1em;
+    font-size: 13px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .curr {
+    font-size: 32px;
+    font-weight: 600;
+    word-break: break-all;
+  }
+  .keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  button {
+    border: 0;
+    border-radius: 12px;
+    font-size: 18px;
+    padding: 16px 0;
+    background: var(--key);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .05s ease, background .15s ease;
+  }
+  button:active { transform: translateY(1px); }
+  button:hover { background: var(--key-hover); }
+  .op { background: var(--key-op); }
+  .eq {
+    background: var(--key-eq);
+    color: white;
+    grid-column: span 2;
+  }
+  .eq:hover { background: var(--key-eq-hover); }
+  .span2 { grid-column: span 2; }
+  .muted { color: var(--muted); font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="calc" role="application" aria-label="Calculator">
+    <div class="display">
+      <div id="prev" class="prev" aria-live="polite"></div>
+      <div id="curr" class="curr" aria-live="polite">0</div>
+    </div>
+    <div class="keys">
+      <button data-action="clear" class="muted">AC</button>
+      <button data-action="backspace" class="muted">⌫</button>
+      <button data-action="percent" class="muted">%</button>
+      <button data-action="op" data-op="÷" class="op">÷</button>
+
+      <button data-num="7">7</button>
+      <button data-num="8">8</button>
+      <button data-num="9">9</button>
+      <button data-action="op" data-op="×" class="op">×</button>
+
+      <button data-num="4">4</button>
+      <button data-num="5">5</button>
+      <button data-num="6">6</button>
+      <button data-action="op" data-op="-" class="op">−</button>
+
+      <button data-num="1">1</button>
+      <button data-num="2">2</button>
+      <button data-num="3">3</button>
+      <button data-action="op" data-op="+" class="op">+</button>
+
+      <button data-action="neg" class="muted">+/-</button>
+      <button data-num="0" class="span2">0</button>
+      <button data-num=".">.</button>
+      <button data-action="equals" class="eq">=</button>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const currEl = document.getElementById('curr');
+  const prevEl = document.getElementById('prev');
+  let current = '0';
+  let previous = '';
+  let operator = null;
+  let overwrite = true;
+
+  const updateDisplay = () => {
+    currEl.textContent = format(current);
+    prevEl.textContent = previous ? `${format(previous)} ${operator || ''}` : '';
+  };
+
+  const format = (num) => {
+    if (num === '' || num === null) return '';
+    const n = Number(num);
+    if (Number.isNaN(n)) return num;
+    const str = Number.isFinite(n) ? n.toLocaleString('en-US', {maximumFractionDigits: 10}) : num;
+    return str;
+  };
+
+  const inputDigit = (d) => {
+    if (overwrite) { current = d === '.' ? '0.' : d; overwrite = false; }
+    else {
+      if (d === '.' && current.includes('.')) return;
+      if (current === '0' && d !== '.') current = d;
+      else current += d;
+    }
+  };
+
+  const inputOp = (op) => {
+    if (previous && operator && !overwrite) {
+      calculate();
+    }
+    previous = current;
+    operator = op;
+    overwrite = true;
+    updateDisplay();
+  };
+
+  const calculate = () => {
+    if (!previous || !operator || overwrite) return;
+    const a = parseFloat(previous);
+    const b = parseFloat(current);
+    if (Number.isNaN(a) || Number.isNaN(b)) return;
+    let res;
+    switch (operator) {
+      case '+': res = a + b; break;
+      case '-': res = a - b; break;
+      case '×': res = a * b; break;
+      case '÷': res = b === 0 ? 'Error' : a / b; break;
+      case '%': res = a % b; break;
+      default: return;
+    }
+    current = String(res);
+    previous = '';
+    operator = null;
+    overwrite = true;
+    updateDisplay();
+  };
+
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const num = btn.dataset.num;
+      const action = btn.dataset.action;
+      const op = btn.dataset.op;
+
+      if (num !== undefined) {
+        inputDigit(num);
+        updateDisplay();
+        return;
+      }
+      switch (action) {
+        case 'clear':
+          current = '0'; previous = ''; operator = null; overwrite = true; updateDisplay(); break;
+        case 'backspace':
+          if (overwrite) return;
+          current = current.slice(0, -1) || '0';
+          updateDisplay(); break;
+        case 'percent':
+          current = String(parseFloat(current) / 100); updateDisplay(); break;
+        case 'neg':
+          if (current !== 'Error') current = String(parseFloat(current) * -1); updateDisplay(); break;
+        case 'op':
+          inputOp(op); break;
+        case 'equals':
+          calculate(); break;
+      }
+    });
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (/[0-9]/.test(e.key)) { inputDigit(e.key); updateDisplay(); }
+    else if (e.key === '.') { inputDigit('.'); updateDisplay(); }
+    else if (e.key === '+' || e.key === '-') { inputOp(e.key === '-' ? '-' : '+'); }
+    else if (e.key === '*') { inputOp('×'); }
+    else if (e.key === '/') { e.preventDefault(); inputOp('÷'); }
+    else if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calculate(); }
+    else if (e.key === 'Backspace') {
+      if (overwrite) return; current = current.slice(0,-1) || '0'; updateDisplay();
+    }
+    else if (e.key === 'Escape') { current='0'; previous=''; operator=null; overwrite=true; updateDisplay(); }
+  });
+
+  updateDisplay();
+})();
+</script>
+</body>
+</html>

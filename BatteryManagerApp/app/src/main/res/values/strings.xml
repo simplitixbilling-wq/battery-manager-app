@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Battery Manager</string>
+    <string name="title_activity_main">Battery Manager</string>
+    <string name="start_charging_threshold">Start Charging Threshold</string>
+    <string name="stop_charging_threshold">Stop Charging Threshold</string>
+    <string name="current_battery_level">Battery: %1$d%%</string>
+    <string name="is_charging">Status: %1$s</string>
+    <string name="charging">Charging</string>
+    <string name="not_charging">Not Charging</string>
+    <string name="full">Full</string>
+    <string name="label_start_threshold">Start at %1$d%%</string>
+    <string name="label_stop_threshold">Stop at %1$d%%</string>
+    <string name="save_settings">Save</string>
+    <string name="reset_defaults">Reset to Defaults</string>
+    <string name="notification_channel_name">Battery Management</string>
+    <string name="notification_channel_desc">Monitors and manages charging automatically</string>
+    <string name="service_notification">Battery Management Active\nStart: %1$d%% | Stop: %2$d%%</string>
+    <string name="boot_completed_toast">Battery Manager started</string>
+    <string name="permission_needed">Battery optimization permission needed</string>
+    <string name="permission_explained">This app needs permission to manage battery settings automatically.</string>
+    <string name="open_settings">Open Settings</string>
+</resources>

@@ -1,0 +1,70 @@
+# Built application artefacts
+.gradle/
+build/
+**/build/
+*.apk
+*.aab
+*.ap_
+*.jar
+*.war
+*.ear
+
+# Keystore files
+*.jks
+*.keystore
+
+# External IDE files
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Gradle cache
+.gradle/
+local.properties
+.gradle.properties
+
+# Proguard logs
+proguard/
+*.log
+
+# Android Studio specific
+*.iml
+*.iws
+*.ipr
+.DS_Store
+captures/
+externalNativeBuild/
+.cxx/
+local.properties
+
+# Google Services (if you add Firebase later)
+google-services.json
+:firebase_debug.properties
+
+# NDK
+obj/
+libs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Test coverage
+/coverage
+
+# Unit test output
+/test-results/
+/test/outputs/
+
+# CI/CD
+.codemagic/
+.github/
+
+# Local config files
+gradle.properties
