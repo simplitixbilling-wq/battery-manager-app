@@ -1,67 +1,38 @@
-# Codemobile.yaml configuration for Battery Manager App
-# https://codemagic.amplifyapp.com/docs/
-
 workflows:
   android-build:
     name: Android Build
-    max-build-duration: 30
+    instance_type: linux_x2
+    max_build_duration: 30
     environment:
+      groups:
+        # Store KEYSTORE_PASSWORD, KEY_ALIAS, and KEY_PASSWORD in a UI group named 'keystore_credentials'
+        - keystore_credentials
+      vars:
+        ANDROID_TOP_LEVEL_PROJECT_DIR: app
       flutter: stable
-      xcode: latest
+      java: 17
+      ndk: 25.2.9519653
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: '*'
+          include: true
+    cache:
+      cache_paths:
+        - $HOME/.gradle/caches
+        - $HOME/.gradle/wrapper
     scripts:
-      - name: Set up JDK
-        script: |
-          echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $CM_ENV
-          echo "export JAVA_HOME" >> $CM_ENV
-          java -version
-
+      - name: Check Java version
+        script: java -version
       - name: Build APK
         script: |
-          cd $CM_PROJECT_DIR
+          cd $CM_BUILD_DIR
           ./gradlew assembleDebug
-
       - name: Locate APK
         script: |
-          echo "APK path: $CM_PROJECT_DIR/app/build/outputs/apk/debug/app-debug.apk"
-          ls -la $CM_PROJECT_DIR/app/build/outputs/apk/debug/
-
-# Android specific configuration
-android:
-  sdk_version: 34
-  ndk_version: 25.2.9519653
-  build_tools_version: 36.1.0
-
-# Environment variables
-environment:
-  JAVA_VERSION: 17
-  ANDROID_TOP_LEVEL_PROJECT_DIR: app
-
-# Artifacts
-artifacts:
-  - app/build/outputs/**/*.apk
-  - app/build/outputs/**/*.aab
-
-# Caching
-cache:
-  directories:
-    - $CM_ROOT/.gradle/caches
-    - $CM_ROOT/.gradle/wrapper
-    - $CM_PROJECT_DIR/app/build
-
-# Triggers
-triggers:
-  - type: manual
-  - type: webhook
-
-# Environment variables for signing
-environment:
-  variables:
-    KEYSTORE_PASSWORD:
-      value: ${KEYSTORE_PASSWORD}
-      required: false
-    KEY_ALIAS:
-      value: ${KEY_ALIAS}
-      required: false
-    KEY_PASSWORD:
-      value: ${KEY_PASSWORD}
-      required: false
+          echo "APK path: $CM_BUILD_DIR/app/build/outputs/apk/debug/app-debug.apk"
+          ls -la $CM_BUILD_DIR/app/build/outputs/apk/debug/
+    artifacts:
+      - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
